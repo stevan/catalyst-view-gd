@@ -22,11 +22,13 @@ __PACKAGE__->mk_accessors(qw[
 
 sub new {
     my($class, $c, $args) = @_;
-    my $self = $class->NEXT::new($c);
+    my $self = $class->NEXT::new($c, $args);
     
-    $args->{gd_image_type}         ||= 'gif';
-    $args->{gd_image_content_type} ||= ('image/' . $args->{gd_image_type});    
-    $args->{gd_image_render_args}  ||= [];
+    my $config = $c->config->{'View::GD'};
+    
+    $args->{gd_image_type}         ||= $config->{gd_image_type}         || 'gif';
+    $args->{gd_image_content_type} ||= $config->{gd_image_content_type} || ('image/' . $args->{gd_image_type});    
+    $args->{gd_image_render_args}  ||= $config->{gd_image_render_args}  || [];
     
     $self->gd_image_type($args->{gd_image_type});
     $self->gd_image_content_type($args->{gd_image_content_type});    
